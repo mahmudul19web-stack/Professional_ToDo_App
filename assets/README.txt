@@ -1,0 +1,1 @@
+Place optional local images or screenshots in this folder. The current interface uses CSS styling and CDN icons/fonts, so no image assets are required.

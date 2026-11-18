@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Page metadata and responsive viewport -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="FocusFlow personal task manager by Mahmudul Haq Rupom">
+  <meta name="author" content="Mahmudul Haq Rupom">
+  <title>FocusFlow | Mahmudul Haq Rupom</title>
+  <!-- External typography and icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <!-- Project stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- Decorative background glows -->
+  <div class="glow glow-a"></div><div class="glow glow-b"></div>
+  <main class="app">
+    <!-- Sidebar / app navigation -->
+    <aside class="sidebar">
+      <a class="brand" href="#"><span class="brand-icon"><i class="fa-solid fa-check-double"></i></span>focus<span>flow</span></a>
+      <p class="side-label">WORKSPACE</p>
+      <nav class="filters" aria-label="Task filters">
+        <button class="filter active" data-filter="all"><i class="fa-solid fa-layer-group"></i> All tasks <b id="countAll">0</b></button>
+        <button class="filter" data-filter="today"><i class="fa-regular fa-calendar"></i> Today <b id="countToday">0</b></button>
+        <button class="filter" data-filter="pending"><i class="fa-regular fa-circle"></i> Pending <b id="countPending">0</b></button>
+        <button class="filter" data-filter="completed"><i class="fa-regular fa-circle-check"></i> Completed <b id="countCompleted">0</b></button>
+      </nav>
+      <div class="side-bottom">
+        <div class="profile"><div class="avatar">MR</div><div><strong>Mahmudul Haq Rupom</strong><small>Personal workspace</small></div><i class="online"></i></div>
+        <small class="credit">Designed & built with <i class="fa-solid fa-heart"></i></small>
+      </div>
+    </aside>
+
+    <!-- Main dashboard -->
+    <section class="content">
+      <header class="topbar">
+        <div class="crumb">Workspace <i class="fa-solid fa-chevron-right"></i> <strong id="crumbLabel">All tasks</strong></div>
+        <div class="top-right"><span id="todayLabel"></span><button id="themeToggle" class="icon-btn" aria-label="Toggle theme"><i class="fa-regular fa-moon"></i></button></div>
+      </header>
+
+      <!-- Welcome banner and progress summary -->
+      <section class="welcome">
+        <div><p class="eyebrow"><span></span> YOUR PERSONAL PRODUCTIVITY SPACE</p><h1>Make today<br><em>count.</em></h1><p class="intro">A little progress every day adds up to big results. Keep your focus, one task at a time.</p></div>
+        <div class="progress-card"><div class="progress-head"><div><small>DAILY PROGRESS</small><strong id="progressPercent">0%</strong></div><i class="fa-solid fa-chart-line"></i></div><div class="track"><span id="progressBar"></span></div><p><b id="doneText">0 tasks completed</b><span id="totalText"> out of 0</span></p></div>
+      </section>
+
+      <!-- Add-task form -->
+      <section class="panel add-panel">
+        <div class="panel-title"><div><small>GET IT OUT OF YOUR HEAD</small><h2>Add a new task</h2></div><i class="fa-solid fa-wand-magic-sparkles sparkle"></i></div>
+        <form id="taskForm" class="task-form">
+          <label class="task-entry"><i class="fa-regular fa-pen-to-square"></i><input id="taskInput" type="text" maxlength="100" placeholder="What needs to be done?" required></label>
+          <label class="date-entry"><i class="fa-regular fa-calendar"></i><input id="taskDate" type="date" aria-label="Due date"></label>
+          <select id="taskPriority" aria-label="Task priority"><option value="medium">Medium priority</option><option value="high">High priority</option><option value="low">Low priority</option></select>
+          <button class="primary-btn" type="submit"><i class="fa-solid fa-plus"></i> Add task</button>
+        </form>
+      </section>
+
+      <!-- Task list controls and dynamic cards -->
+      <section class="tasks-section">
+        <div class="tasks-head"><div><small>STAY ON TRACK</small><h2 id="listHeading">Your tasks <span id="visibleCount">0</span></h2></div>
+          <div class="controls"><label class="search"><i class="fa-solid fa-magnifying-glass"></i><input id="searchInput" type="search" placeholder="Search tasks..."></label><select id="sortSelect" aria-label="Sort tasks"><option value="newest">Newest first</option><option value="oldest">Oldest first</option><option value="priority">By priority</option><option value="date">By due date</option></select></div>
+        </div>
+        <div id="taskList" class="task-list" aria-live="polite"></div>
+        <!-- Friendly empty state shown when no tasks match -->
+        <div id="emptyState" class="empty"><div><i class="fa-solid fa-clipboard-check"></i><span>✦</span></div><h3>All clear. Nice work!</h3><p>Your task list is looking peaceful. Add a task above to get started.</p></div>
+      </section>
+      <!-- App footer -->
+      <footer><span>© <b id="year"></b> Mahmudul Haq Rupom</span><span>Built for better days <i class="fa-solid fa-heart"></i></span></footer>
+    </section>
+  </main>
+
+  <!-- Edit task modal -->
+  <dialog id="editDialog">
+    <form id="editForm">
+      <div class="modal-head"><div><small>MAKE AN UPDATE</small><h2>Edit task</h2></div><button type="button" class="icon-btn" id="closeDialog"><i class="fa-solid fa-xmark"></i></button></div>
+      <label>Task name<input id="editTitle" maxlength="100" required></label>
+      <div class="modal-grid"><label>Due date<input id="editDate" type="date"></label><label>Priority<select id="editPriority"><option value="low">Low</option><option value="medium">Medium</option><option value="high">High</option></select></label></div>
+      <div class="modal-actions"><button type="button" class="secondary-btn" id="cancelEdit">Cancel</button><button class="primary-btn" type="submit">Save changes</button></div>
+    </form>
+  </dialog>
+  <!-- Small status notification -->
+  <div id="toast" class="toast" role="status"><i class="fa-solid fa-circle-check"></i><span id="toastText"></span></div>
+  <!-- App JavaScript -->
+  <script src="js/script.js"></script>
+</body>
+</html>
